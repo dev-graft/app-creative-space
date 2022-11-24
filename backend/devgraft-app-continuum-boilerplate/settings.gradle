@@ -1,0 +1,10 @@
+rootProject.name = 'devgraft-app-continuum-boilerplate'
+
+include ':features:support-mapper' // objectMapper 설정(기본 종속)
+include ':features:support-jpa' // jpa 기본 구성 (profile local 설정 시 h2)
+include ':features:support-exception' // 예외처리 기본 구성
+include ':features:support-advice' // support-mapper + support-exception
+include ':features:support-swagger' // support-mapper + support-exception
+include ':features:support-sentry' // support-mapper + support-exception
+
+include ':applications:app-demo' // support-mapper + support-exception

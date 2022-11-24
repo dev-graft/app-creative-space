@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: h2
+
+sentry:
+  dsn: https://ec97e93bad594c299da6e6b688065599@o4504212866793472.ingest.sentry.io/4504212871053312
+  traces-sample-rate: 1.0
