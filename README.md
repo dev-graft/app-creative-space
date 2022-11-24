@@ -1,7 +1,6 @@
-# ProjectTemplate - 서비스 이름으로 변경해주세요.
+# CreativeSpace
 
-Docs 타입 리포지토리입니다.
-서비스 소개 글로 변경해주세요.
+DevGraft 참여자 모두 자유롭게 원하는 것을 올릴 수 있는 공간입니다.
 
 ### :framed_picture: 서비스 이미지
 
