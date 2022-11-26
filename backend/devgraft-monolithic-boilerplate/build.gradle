@@ -5,10 +5,13 @@ plugins {
 }
 
 group = 'devgraft'
-version = '0.0.1'
+version = null
 sourceCompatibility = '11'
-jar { enabled = false }
+archivesBaseName = 'app'
+jar {enabled = false}
+
 configurations {
+//    jar.archiveName = "app.jar"
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -16,6 +19,18 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+
+clean {
+    delete "app.jar"
+}
+
+tasks.build.doLast {
+    copy {
+        from "build/libs"
+        include "**"
+        into "."
+    }
 }
 
 dependencies {
