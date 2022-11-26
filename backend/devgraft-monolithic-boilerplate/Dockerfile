@@ -5,5 +5,5 @@ RUN apk update && \
     
 ENV TZ Asia/Seoul
 
-ADD app.jar
+ADD app.jar app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
