@@ -1,7 +1,7 @@
 FROM openjdk:11
 
-RUN apk update && \
-    apk add --no-cache tzdata
+RUN apt-get update && \
+    apt-get install --no-cache tzdata
     
 ENV TZ Asia/Seoul
 

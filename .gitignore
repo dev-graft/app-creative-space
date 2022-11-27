@@ -1415,3 +1415,5 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,maven,groovy,go,goland+all,intellij,intellij+iml,intellij+all,swift,visualstudio,visualstudiocode,android,androidstudio,windows,macos,react,reactnative,nextjs,node,java,jupyternotebooks
+# Ignore Gradle build output directory
+build
