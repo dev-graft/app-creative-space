@@ -1,7 +1,7 @@
 FROM openjdk:11
 
 RUN apt-get update && \
-    apt-get install --no-cache tzdata
+    apt-get install tzdata
     
 ENV TZ Asia/Seoul
 
