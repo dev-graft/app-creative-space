@@ -8,6 +8,6 @@ public class DemoApi {
 
     @GetMapping("home")
     public String home() {
-        return "Well Come Devgraft! / monolithic-boilerplate";
+        return "Well Come Devgraft!\nmonolithic-boilerplate";
     }
 }
