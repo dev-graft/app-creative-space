@@ -35,10 +35,6 @@ public class ServletConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/docs/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-
-//        registry.addResourceHandler("/**")
-//                .addResourceLocations("classpath:/", "classpath:/static/", "classpath:/public/", "classpath:/resources/", "classpath:/META-INF/resources")
-//                .setCachePeriod(20);
     }
 
     @Bean

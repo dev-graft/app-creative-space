@@ -6,5 +6,6 @@ include ':features:support-exception' // 예외처리 기본 구성
 include ':features:support-advice' // support-mapper + support-exception
 include ':features:support-swagger' // support-mapper + support-exception
 include ':features:support-sentry' // support-mapper + support-exception
+include ':features:support-event' // support-mapper + support-exception
 
 include ':applications:app-demo' // support-mapper + support-exception

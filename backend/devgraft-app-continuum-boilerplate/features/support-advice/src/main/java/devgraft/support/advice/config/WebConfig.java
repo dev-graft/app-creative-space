@@ -11,11 +11,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:9001")
                 .allowedOrigins("*")
-//                .allowedOrigins(domainProperties.getBaseUrl(), "http://localhost:8084", "https://10.10.40.139")
                 .allowCredentials(false)
-//                .allowedOriginPatterns("*")
+                .allowedOriginPatterns("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders(
@@ -27,6 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
                         "Access-Control-Request-Method",
                         "Access-Control-Request-Headers"
                         )
-                .maxAge(1728000);
+                .maxAge(1728000L);
     }
 }
