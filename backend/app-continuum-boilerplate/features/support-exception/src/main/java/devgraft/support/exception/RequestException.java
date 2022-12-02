@@ -17,7 +17,7 @@ public class RequestException extends RuntimeException {
         super(HttpStatus.BAD_REQUEST.getReasonPhrase());
         this.status = HttpStatus.BAD_REQUEST;
         this.message = status.getReasonPhrase();
-        this.printStackTrace();
+//        this.printStackTrace();
     }
     /**
      * Status-400 기본 예외처리 생성자
@@ -27,7 +27,7 @@ public class RequestException extends RuntimeException {
         super(message);
         this.status = HttpStatus.BAD_REQUEST;
         this.message = message;
-        this.printStackTrace();
+//        this.printStackTrace();
     }
     /**
      * 예외처리 생성자
@@ -38,6 +38,6 @@ public class RequestException extends RuntimeException {
         super(message);
         this.status = status;
         this.message = message;
-        this.printStackTrace();
+//        this.printStackTrace();
     }
 }

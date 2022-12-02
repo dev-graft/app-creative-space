@@ -45,8 +45,8 @@ public class ValidationAsserts {
         if (errors.isEmpty()) return;
 
         String builder = errors.stream()
-                .map(error -> assertMessageFormat(error.getField(), error.getMessage()) + "%n")
-                .collect(Collectors.joining("", "[ValidationAssert HasError]%n", ""));
+                .map(error -> assertMessageFormat(error.getField(), error.getMessage()) + "\n")
+                .collect(Collectors.joining("", "[ValidationAssert HasError]\n", ""));
 
         Assertions.fail(builder);
     }

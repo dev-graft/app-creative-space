@@ -1,6 +1,5 @@
-package devgraft.module.member.domain;
+package devgraft.module.member.query;
 
-import devgraft.support.jpa.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,13 +14,13 @@ import javax.persistence.Table;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 @Table(name = "MEMBER")
 @Entity
-public class Member extends BaseEntity {
+@Getter
+public class MemberData {
     @Id
-    @Column(name = "id")
-    private String id;
+    @Column(name = "member_id")
+    private String memberId;
     @Column(name = "nickname")
     private String nickname;
 }
