@@ -1,8 +1,8 @@
 package devgraft.module.auth.api;
 
+import devgraft.module.auth.app.OAuth;
 import devgraft.module.auth.app.OAuthService;
 import devgraft.module.auth.app.OAuthServiceFactory;
-import devgraft.module.auth.common.OAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

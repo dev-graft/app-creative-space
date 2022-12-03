@@ -1,6 +1,5 @@
 package devgraft.module.auth.app;
 
-import devgraft.module.auth.common.OAuth;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
