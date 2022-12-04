@@ -13,6 +13,7 @@ include ':features:support-event-member'
 /* modules */
 include ':components:module-auth'
 include ':components:module-member'
+include ':components:module-chatbot'
 /* clients */
 include ':components:client-member'
 /* apps */
