@@ -1,12 +1,18 @@
-import * as Styled from './style'
-import {Components} from "@/types";
+import {Components} from '@/types';
+import {Button, ButtonProps} from '@mui/material';
 
-function Button({children, ...props}: Components.ButtonProps) {
+
+type CustomButtonProps = ButtonProps&{
+    size: typeof Components.SizeKind.small | typeof Components.SizeKind.medium | typeof Components.SizeKind.large,
+    value: string
+};
+
+function MyButton({value, size}: CustomButtonProps) {
     return (
-        <Styled.Container {...props}>
-            {children}
-        </Styled.Container>
-    )
+        <Button variant='contained' size={size}>
+            {value}
+        </Button>
+    );
 }
 
 const defaultProps: Components.ButtonProps = {
@@ -15,6 +21,6 @@ const defaultProps: Components.ButtonProps = {
     styleType: 'solid'
 };
 
-Button.defaultProps = defaultProps;
+MyButton.defaultProps = defaultProps;
 
-export default Button
+export default MyButton

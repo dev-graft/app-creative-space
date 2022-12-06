@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from "next/head";
-import {Container, Button} from '@mui/material'
+import {Container} from '@mui/material'
+import { Button } from '@/components';
 
 export default function LoginFeature() {
     return (
@@ -10,7 +11,7 @@ export default function LoginFeature() {
             </Head>
             <main>
                 <h1>Clicker</h1>
-                <Button/>
+                <Button size={'medium'} value={'Click!!'}/>
             </main>
         </Container>
     );
