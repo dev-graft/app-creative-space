@@ -8,6 +8,6 @@ public class DemoApi {
 
     @GetMapping
     public String home() {
-        return "Well Come Devgraft! [Main]";
+        return "Well Come Devgraft! [Dev]";
     }
 }

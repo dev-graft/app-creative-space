@@ -1,8 +1,8 @@
 import {ComponentMeta, ComponentStory} from '@storybook/react';
-import Button from "./index"
+import Button from './index'
 
 export default {
-    title: "shard/Button",
+    title: "mui/Button",
     component: Button
 } as ComponentMeta<typeof Button>
 
@@ -11,7 +11,6 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args}/>;
 export const ButtonTemplate = Template.bind({});
 
 ButtonTemplate.args = {
-    styleType: 'solid',
-    size:  'medium',
-    children: "Button",
+    value: "Button",
+    size: 'medium'
 };
