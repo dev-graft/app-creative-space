@@ -2,7 +2,7 @@
 import {ThemeProvider as StyledComponentsThemeProvider} from 'styled-components'
 import {GlobalStyle, Theme} from '@/styles'
 /*emotion + mui*/
-import {ThemeProvider as MuiThemeProvider} from '@mui/material/styles'
+import {ThemeProvider as MuiThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline';
 import {CacheProvider} from '@emotion/react';
 import {createEmotionCache} from "@/utils/pages";
@@ -13,7 +13,7 @@ const clientSideEmotionCache = createEmotionCache();
 export default function App({Component, pageProps, emotionCache = clientSideEmotionCache}: EmotionAppProps) {
     return (
         <CacheProvider value={emotionCache}>
-            <MuiThemeProvider theme={Theme.LightMode}>
+            <MuiThemeProvider theme={createTheme}>
                 <CssBaseline/>
                 <StyledComponentsThemeProvider theme={Theme.LightMode}>
                     <GlobalStyle/>
