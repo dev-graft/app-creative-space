@@ -9,10 +9,6 @@ import org.springframework.util.StringUtils;
 public class AddQuizService {
     public Long addQuiz(final AddQuizRequest request) {
         validate(request);
-
-
-
-
         return 0L;
     }
 
