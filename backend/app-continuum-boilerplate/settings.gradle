@@ -9,11 +9,7 @@ include ':features:support-swagger' // support-mapper + support-exception
 include ':features:support-sentry' // support-mapper + support-exception
 include ':features:support-event'
 /* events */
-include ':features:support-event-member'
 /* modules */
-include ':components:module-auth'
-include ':components:module-member'
 /* clients */
-include ':components:client-member'
 /* apps */
 include ':applications:app-demo' // support-mapper + support-exception
