@@ -16,5 +16,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation(project(':features:support-advice'))
     implementation(project(':features:support-swagger'))
-    implementation(project(':features:support-sentry'))
+//    implementation(project(':features:support-sentry'))
+    implementation(project(':components:module-quiz'))
 }

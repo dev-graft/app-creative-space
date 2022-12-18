@@ -15,8 +15,8 @@ import java.time.LocalTime;
 public class AddQuizRequest {
     private String title;
     private String desc;
-    private Long timer;
-    private Long answer;
+    private long timer;
+    private long answer;
     private String select1;
     private String select2;
     private String select3;

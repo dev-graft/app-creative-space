@@ -10,6 +10,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.refEq;
 
 class AddQuizServiceTest {
@@ -88,7 +90,7 @@ class AddQuizServiceTest {
                 .endTime(LocalTime.of(5, 0))
                 .build();
 
-        BDDMockito.given(quizRepository.findQuizByOpenAt(refEq(givenOpenAt))).willReturn(Optional.of(new Quiz()));
+        BDDMockito.given(quizRepository.findQuizByOpenAt(refEq(givenOpenAt))).willReturn(Optional.of(Quiz.builder().build()));
 
 
         final RequestException requestException = assertThrows(RequestException.class,
@@ -96,5 +98,40 @@ class AddQuizServiceTest {
 
         Assertions.assertThat(requestException.getMessage()).isEqualTo("openAt은 중복되어선 안된다.");
         Assertions.assertThat(requestException.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @DisplayName("AddQuizRequest값이 Quiz와 동일한지 검사")
+    @Test
+    void addQuiz_equalsTrue() {
+        final LocalDate givenOpenAt = LocalDate.of(2022, 12, 18);
+        final AddQuizRequest givenRequest = AddQuizRequest.builder()
+                .title("title")
+                .desc("desc")
+                .select1("select1")
+                .select2("select2")
+                .openAt(givenOpenAt)
+                .openTime(LocalTime.of(3, 45))
+                .endTime(LocalTime.of(5, 0))
+                .build();
+        BDDMockito.given(quizRepository.findQuizByOpenAt(any())).willReturn(Optional.empty());
+
+        addQuizService.addQuiz(givenRequest);
+
+        final Quiz saveQuiz = Quiz.builder()
+                .title(givenRequest.getTitle())
+                .desc(givenRequest.getDesc())
+                .timer(givenRequest.getTimer())
+                .answer(givenRequest.getAnswer())
+                .isAnswer(0L != givenRequest.getAnswer())
+                .select1(givenRequest.getSelect1())
+                .select2(givenRequest.getSelect2())
+                .select3(givenRequest.getSelect3())
+                .select4(givenRequest.getSelect4())
+                .openAt(givenRequest.getOpenAt())
+                .openTime(givenRequest.getOpenTime())
+                .endTime(givenRequest.getEndTime())
+                .build();
+
+        Mockito.verify(quizRepository).save(ArgumentMatchers.refEq(saveQuiz));
     }
 }
