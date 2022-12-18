@@ -35,4 +35,21 @@ public class Quiz extends BaseEntity {
     private LocalDate openAt;
     private LocalTime openTime;
     private LocalTime endTime;
+
+    public void update(final String title, final String desc, final Long answer, final Long timer,
+                       final String select1, final String select2, final String select3, final String select4,
+                       final LocalDate openAt, final LocalTime openTime, final LocalTime endTime) {
+        this.title = title;
+        this.desc = desc;
+        this.answer = answer;
+        this.timer = timer;
+        this.isAnswer = 0L != answer;
+        this.select1 = select1;
+        this.select2 = select2;
+        this.select3 = select3;
+        this.select4 = select4;
+        this.openAt = openAt;
+        this.openTime = openTime;
+        this.endTime = endTime;
+    }
 }
