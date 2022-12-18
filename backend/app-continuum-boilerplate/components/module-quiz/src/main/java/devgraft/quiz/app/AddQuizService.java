@@ -1,15 +1,27 @@
 package devgraft.quiz.app;
 
+import devgraft.quiz.domain.QuizRepository;
+import devgraft.support.exception.RequestException;
 import devgraft.support.exception.Validation;
 import devgraft.support.exception.ValidationError;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+@RequiredArgsConstructor
 @Service
 public class AddQuizService {
+    private final QuizRepository quizRepository;
+
+    @Transactional
     public Long addQuiz(final AddQuizRequest request) {
         validate(request);
-        // openAt이 동일한게 있는지 검사
+        if (quizRepository.findQuizByOpenAt(request.getOpenAt()).isPresent()) {
+            throw RequestException.of(HttpStatus.BAD_REQUEST, "openAt은 중복되어선 안된다.");
+        }
+        // repository 가져 optional에서 값이 비어 있을 경우 예외처리
         // Quiz 생성
         return 0L;
     }

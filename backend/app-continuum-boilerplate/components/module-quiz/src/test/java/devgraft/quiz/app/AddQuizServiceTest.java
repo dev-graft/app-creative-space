@@ -1,22 +1,34 @@
 package devgraft.quiz.app;
 
+import devgraft.quiz.domain.Quiz;
+import devgraft.quiz.domain.QuizRepository;
+import devgraft.support.exception.RequestException;
 import devgraft.support.exception.ValidationAsserts;
 import devgraft.support.exception.ValidationError;
 import devgraft.support.exception.ValidationException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.refEq;
 
 class AddQuizServiceTest {
     private AddQuizService addQuizService;
+    private QuizRepository quizRepository;
 
     @BeforeEach
     void setUp() {
-        addQuizService = new AddQuizService();
+        quizRepository = Mockito.mock(QuizRepository.class);
+        addQuizService = new AddQuizService(quizRepository);
     }
 
     @DisplayName("퀴즈 요청문이 정확하지 않으면 예외처리")
@@ -60,5 +72,29 @@ class AddQuizServiceTest {
         final ValidationException validationException = assertThrows(ValidationException.class, () -> addQuizService.addQuiz(givenRequest));
 
         ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("openTime", "openTime은 endTime과 30분 차이가 나야한다."));
+    }
+
+    @DisplayName("openAt은 중복되어선 안된다.")
+    @Test
+    void addQuiz_throw_DuplicatedOpenAtException() {
+        final LocalDate givenOpenAt = LocalDate.of(2022, 12, 18);
+        final AddQuizRequest givenRequest = AddQuizRequest.builder()
+                .title("title")
+                .desc("desc")
+                .select1("select1")
+                .select2("select2")
+                .openAt(givenOpenAt)
+                .openTime(LocalTime.of(3, 45))
+                .endTime(LocalTime.of(5, 0))
+                .build();
+
+        BDDMockito.given(quizRepository.findQuizByOpenAt(refEq(givenOpenAt))).willReturn(Optional.of(new Quiz()));
+
+
+        final RequestException requestException = assertThrows(RequestException.class,
+                () -> addQuizService.addQuiz(givenRequest));
+
+        Assertions.assertThat(requestException.getMessage()).isEqualTo("openAt은 중복되어선 안된다.");
+        Assertions.assertThat(requestException.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

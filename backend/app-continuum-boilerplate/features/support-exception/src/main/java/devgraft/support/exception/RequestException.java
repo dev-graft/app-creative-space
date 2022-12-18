@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 public class RequestException extends RuntimeException {
     private final HttpStatus status;
     private final String message;
+
     /**
      * 기본 예외처리 생성자
      */
@@ -19,8 +20,10 @@ public class RequestException extends RuntimeException {
         this.message = status.getReasonPhrase();
 //        this.printStackTrace();
     }
+
     /**
      * Status-400 기본 예외처리 생성자
+     *
      * @param message 예외처리 메세지
      */
     protected RequestException(final String message) {
@@ -29,15 +32,21 @@ public class RequestException extends RuntimeException {
         this.message = message;
 //        this.printStackTrace();
     }
+
     /**
      * 예외처리 생성자
+     *
      * @param message 예외처리 메세지
-     * @param status 예외처리 상태 코드
+     * @param status  예외처리 상태 코드
      */
     protected RequestException(final HttpStatus status, final String message) {
         super(message);
         this.status = status;
         this.message = message;
 //        this.printStackTrace();
+    }
+
+    public static RequestException of(final HttpStatus status, final String message) {
+        return new RequestException(status, message);
     }
 }
