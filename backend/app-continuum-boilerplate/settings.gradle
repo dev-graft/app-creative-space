@@ -10,6 +10,7 @@ include ':features:support-sentry' // support-mapper + support-exception
 include ':features:support-event'
 /* events */
 /* modules */
+include ':components:module-quiz'
 /* clients */
 /* apps */
 include ':applications:app-demo' // support-mapper + support-exception

@@ -19,4 +19,8 @@ public class ValidationError {
     public boolean equals(final String cField, final String cMessage) {
         return Objects.equals(field, cField) && Objects.equals(message, cMessage);
     }
+
+    public boolean equals(final ValidationError cError) {
+        return Objects.equals(field, cError.getField()) && Objects.equals(message, cError.getMessage());
+    }
 }

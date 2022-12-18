@@ -24,6 +24,20 @@ public class ValidationAsserts {
     }
 
     /**
+     * [field,message]와 동일한 Error가 없을 경우 Fail을 호출합니다.
+     * @param errors 에러 리스트
+     * @param validationError 에러
+     */
+    public static void assertHasCall(final Collection<? extends ValidationError> errors, final ValidationError validationError) {
+        errors.stream()
+                .filter(error -> error.equals(validationError))
+                .findFirst()
+                .ifPresentOrElse(result-> {
+                }, () -> showAssertMessage("HasCall", validationError.getField(), validationError.getMessage()));
+
+    }
+
+    /**
      * [field,message]와 동일한 Error가 있을 경우 Fail을 호출합니다.
      * @param errors 에러 리스트
      * @param field 에러 필드 명
