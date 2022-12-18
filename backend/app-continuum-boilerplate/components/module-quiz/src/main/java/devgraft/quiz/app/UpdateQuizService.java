@@ -23,7 +23,6 @@ public class UpdateQuizService {
         QuizHelper.existThrowQuizByOpenAt(quizRepository, request.getOpenAt());
         final Optional<Quiz> quizOpt = quizRepository.findById(request.getQuizId());
         if (quizOpt.isEmpty()) throw RequestException.of(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다.");
-
         final Quiz quiz = quizOpt.get();
         quiz.update(request.getTitle(), request.getDesc(), request.getAnswer(), request.getTimer(),
                 request.getSelect1(), request.getSelect2(), request.getSelect3(), request.getSelect4(),
