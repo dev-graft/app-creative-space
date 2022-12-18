@@ -9,6 +9,8 @@ import org.springframework.util.StringUtils;
 public class AddQuizService {
     public Long addQuiz(final AddQuizRequest request) {
         validate(request);
+        // openAt이 동일한게 있는지 검사
+        // Quiz 생성
         return 0L;
     }
 
@@ -19,9 +21,11 @@ public class AddQuizService {
                 .ifFalse(()->StringUtils.hasText(request.getDesc()), ValidationError.of("desc", "must null not be desc"))
                 .ifFalse(()->StringUtils.hasText(request.getSelect1()), ValidationError.of("select1", "must null not be select1"))
                 .ifFalse(()->StringUtils.hasText(request.getSelect2()), ValidationError.of("select2", "must null not be select2"))
-                .ifTrue(() -> null == request.getOpenAt(), ValidationError.of("openAt", "must null not be openAt"))
+                .ifTrue(() -> null == request.getOpenAt(),   ValidationError.of("openAt", "must null not be openAt"))
                 .ifTrue(() -> null == request.getOpenTime(), ValidationError.of("openTime", "must null not be openTime"))
-                .ifTrue(() -> null == request.getEndTime(), ValidationError.of("endTime", "must null not be endTime"))
+                .ifTrue(() -> null == request.getEndTime(),  ValidationError.of("endTime", "must null not be endTime"))
+                .ifFalse(()-> null != request.getOpenTime() && null != request.getEndTime() && request.getOpenTime().isBefore(request.getEndTime()), ValidationError.of("openTime", "openTime이 endTime보다 이전이어야한다"))
+                .ifFalse(()-> null != request.getOpenTime() && null != request.getEndTime() && request.getOpenTime().isBefore(request.getEndTime().minusMinutes(30L)), ValidationError.of("openTime", "openTime은 endTime과 30분 차이가 나야한다."))
                 .ifThrow();
     }
 }
