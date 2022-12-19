@@ -2,6 +2,8 @@ package devgraft.quiz.app;
 
 import devgraft.quiz.domain.Quiz;
 import devgraft.quiz.domain.QuizRepository;
+import devgraft.quiz.service.QuizFixture;
+import devgraft.quiz.service.UpdateQuizRequestFixture;
 import devgraft.support.exception.RequestException;
 import devgraft.support.exception.ValidationAsserts;
 import devgraft.support.exception.ValidationError;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
+@DisplayName("퀴즈 업데이트 서비스")
 class UpdateQuizServiceTest {
     private UpdateQuizService updateQuizService;
     private QuizRepository quizRepository;
@@ -29,32 +32,31 @@ class UpdateQuizServiceTest {
     @BeforeEach
     void setUp() {
         quizRepository = Mockito.mock(QuizRepository.class);
-        BDDMockito.given(quizRepository.findQuizByOpenAt(any())).willReturn(Optional.empty());
         updateQuizService = new UpdateQuizService(quizRepository);
     }
 
-    @DisplayName("퀴즈 요청문이 정확하지 않으면 예외처리")
+    @DisplayName("요청문이 요구사항에 맞지않으면 에러를 반환한다.")
     @Test
     void updateQuiz_throw_ValidationException() {
-        final UpdateQuizRequest givenRequest = new UpdateQuizRequest();
+        final UpdateQuizRequest givenRequest = UpdateQuizRequestFixture.anEmptyRequest().build();
 
         final ValidationException validationException = assertThrows(ValidationException.class, () -> updateQuizService.updateQuiz(givenRequest));
 
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("quizId", "must null not be quizId"));
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("title", "must null not be Title"));
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("desc", "must null not be desc"));
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("select1", "must null not be select1"));
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("select2", "must null not be select2"));
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("openAt", "must null not be openAt"));
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("openTime", "must null not be openTime"));
-        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("endTime", "must null not be endTime"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("quizId", "must quizId not be null"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("title", "must title not be null"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("desc", "must desc not be null"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("select1", "must select1 not be null"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("select2", "must select2 not be null"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("openAt", "must openAt not be null"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("openTime", "must openTime not be null"));
+        ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("endTime", "must endTime not be null"));
         ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("openTime", "openTime이 endTime보다 이전이어야한다"));
     }
 
-    @DisplayName("퀴즈 openTime이 endTime보다 이전이 아닐 경우 예외처리")
+    @DisplayName("openTime이 endTime 이후라면 에러를 반환한다.")
     @Test
     void addQuiz_throw_ValidationException2() {
-        final UpdateQuizRequest givenRequest = UpdateQuizRequest.builder()
+        final UpdateQuizRequest givenRequest = UpdateQuizRequestFixture.anRequest()
                 .openTime(LocalTime.of(3, 45))
                 .endTime(LocalTime.of(2, 45))
                 .build();
@@ -65,21 +67,16 @@ class UpdateQuizServiceTest {
         ValidationAsserts.assertHasCall(validationException.getErrors(), ValidationError.of("openTime", "openTime이 endTime보다 이전이어야한다"));
     }
 
-    @DisplayName("openAt은 중복되어선 안된다.")
+    @DisplayName("openAt을 업데이트 할 때 Repo에 [자신 제외] 동일한 openAt이 이미 존재할 경우 에러를 반환한다.")
     @Test
     void updateQuiz_throw_DuplicatedOpenAtException() {
         final LocalDate givenOpenAt = LocalDate.of(2022, 12, 18);
-        final UpdateQuizRequest givenRequest = UpdateQuizRequest.builder()
-                .title("title")
-                .desc("desc")
-                .select1("select1")
-                .select2("select2")
+        final UpdateQuizRequest givenRequest = UpdateQuizRequestFixture.anRequest()
                 .openAt(givenOpenAt)
-                .openTime(LocalTime.of(3, 45))
-                .endTime(LocalTime.of(5, 0))
                 .build();
 
-        BDDMockito.given(quizRepository.findQuizByOpenAt(givenOpenAt)).willReturn(Optional.of(Quiz.builder().build()));
+        BDDMockito.given(quizRepository.findById(any())).willReturn(Optional.of(QuizFixture.anQuiz().build()));
+        BDDMockito.given(quizRepository.findTopByOpenAt(givenOpenAt)).willReturn(Optional.of(Quiz.builder().build()));
 
         final RequestException requestException = assertThrows(RequestException.class,
                 () -> updateQuizService.updateQuiz(givenRequest));
@@ -88,64 +85,37 @@ class UpdateQuizServiceTest {
         Assertions.assertThat(requestException.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-    @DisplayName("id에 해당하는 Quiz가 존재해야한다.")
+    @DisplayName("id에 해당하는 Quiz가 존재하지 않는다면 에러를 반환한다.")
     @Test
     void updateQuiz_throw_NotExistsQuiz() {
-        // given
         final Long quizId = 1L;
-        final UpdateQuizRequest givenRequest = UpdateQuizRequest.builder()
-                .quizId(quizId)
-                .title("title")
-                .desc("desc")
-                .select1("select1")
-                .select2("select2")
-                .openAt(LocalDate.of(2022,12,18))
-                .openTime(LocalTime.of(3, 45))
-                .endTime(LocalTime.of(5, 0))
-                .build();
-
+        final UpdateQuizRequest givenRequest = UpdateQuizRequestFixture.anRequest().build();
         BDDMockito.given(quizRepository.findById(quizId)).willReturn(Optional.empty());
-        // when
+
         final RequestException requestException = assertThrows(RequestException.class,
                 () -> updateQuizService.updateQuiz(givenRequest));
-        //then
+
         Assertions.assertThat(requestException.getMessage()).isEqualTo("해당 퀴즈가 존재하지 않습니다.");
         Assertions.assertThat(requestException.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-    @DisplayName("UpdateQuizRequest값이 Quiz와 동일한지 검사")
+    @DisplayName("Quiz의 업데이트 된 내용은 요청문과 동일하다.")
     @Test
     void editQuiz_equalsTrue() {
-        final UpdateQuizRequest givenRequest = UpdateQuizRequest.builder()
-                .quizId(1L)
-                .title("title")
-                .desc("desc")
-                .select1("select1")
-                .select2("select2")
-                .answer(2L)
-                .openAt(LocalDate.of(2022, 12, 19))
-                .openTime(LocalTime.of(3, 45))
-                .endTime(LocalTime.of(5, 0))
+        final Long givenQUizId = 2L;
+        final UpdateQuizRequest givenRequest = UpdateQuizRequestFixture.anRequest()
+                .quizId(givenQUizId)
                 .build();
-        final Quiz returnQuiz = Quiz.builder()
-                .title("AT")
-                .desc("DE")
-                .timer(100L)
-                .answer(2L)
-                .select1("SE1")
-                .select2("SE1")
-                .select3("SE1")
-                .select4("SE1")
-                .openAt(givenRequest.getOpenAt().plusDays(1L))
-                .openTime(givenRequest.getOpenTime().plusHours(2L))
-                .endTime(givenRequest.getEndTime().plusHours(4L))
+        final Quiz updateTargetQuiz = QuizFixture.anQuiz()
+                .id(givenQUizId)
                 .build();
 
-        BDDMockito.given(quizRepository.findById(givenRequest.getQuizId())).willReturn(Optional.of(returnQuiz));
+        BDDMockito.given(quizRepository.findById(givenRequest.getQuizId())).willReturn(Optional.of(updateTargetQuiz));
 
         updateQuizService.updateQuiz(givenRequest);
 
-        final Quiz saveQuiz = Quiz.builder()
+        final Quiz saveQuiz = QuizFixture.anQuiz()
+                .id(givenQUizId)
                 .title(givenRequest.getTitle())
                 .desc(givenRequest.getDesc())
                 .timer(givenRequest.getTimer())
@@ -162,5 +132,4 @@ class UpdateQuizServiceTest {
 
         Mockito.verify(quizRepository).save(ArgumentMatchers.refEq(saveQuiz));
     }
-
 }

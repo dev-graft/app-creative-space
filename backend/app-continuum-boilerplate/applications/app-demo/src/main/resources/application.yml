@@ -1,7 +1,12 @@
 spring:
+  config:
+    import:
+    - classpath:db.properties
   profiles:
-    active: h2
-
-sentry:
-  dsn: ${DSN}
-  traces-sample-rate: 1.0
+    include:
+      - db
+      - sentry
+    group:
+      local: local,h2,admin
+      dev: local,h2
+      prod:

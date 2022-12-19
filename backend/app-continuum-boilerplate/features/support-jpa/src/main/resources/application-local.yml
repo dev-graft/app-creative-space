@@ -1,5 +1,4 @@
 spring:
   config:
-    activate:
-      on-profile:
-        - h2
+    import:
+      - classpath:application-h2.yml

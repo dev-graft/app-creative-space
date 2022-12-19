@@ -1,15 +1,59 @@
 buildscript {
 	ext {
 		springBootVersion = '2.7.3'
+		queryDslVersion = "5.0.0"
 	}
 
 	repositories {
 		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
 	}
 }
+
+plugins {
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+}
+
+dependencies {
+	compile("com.querydsl:querydsl-jpa:${queryDslVersion}")
+	compile("com.querydsl:querydsl-apt:${queryDslVersion}")
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+
+build {
+	dependsOn compileQuerydsl
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+
+
+
+
+
+
 
 subprojects {
 	apply plugin: 'java-test-fixtures'
@@ -40,12 +84,14 @@ subprojects {
 
 		if(!project.name.contentEquals('support-mapper')) {
 			implementation(project(':features:support-mapper'))
-			testImplementation(testFixtures(project(":features:support-mapper")))
+			testFixturesApi(project(':features:support-mapper'))
+			testImplementation(testFixtures(project(":features:support-mapper"))) // << 안되는듯
 		}
 
 		if (!project.name.contains("support-")) {
 			implementation(project(':features:support-exception'))
-			testImplementation(testFixtures(project(":features:support-exception")))
+			testFixturesApi(project(':features:support-exception'))
+			testImplementation(testFixtures(project(":features:support-exception"))) // << 안되는듯
 		}
 
 		testFixturesApi("org.mockito:mockito-core:3.5.13")

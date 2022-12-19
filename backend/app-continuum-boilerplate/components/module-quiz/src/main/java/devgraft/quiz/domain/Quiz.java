@@ -1,6 +1,7 @@
 package devgraft.quiz.domain;
 
 import devgraft.support.jpa.BaseEntity;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,13 +16,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "QUIZ")
-@NoArgsConstructor
-@Getter
 @Entity
+@Getter
 public class Quiz extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String desc;
@@ -36,20 +38,35 @@ public class Quiz extends BaseEntity {
     private LocalTime openTime;
     private LocalTime endTime;
 
-    public void update(final String title, final String desc, final Long answer, final Long timer,
-                       final String select1, final String select2, final String select3, final String select4,
-                       final LocalDate openAt, final LocalTime openTime, final LocalTime endTime) {
-        this.title = title;
-        this.desc = desc;
-        this.answer = answer;
-        this.timer = timer;
-        this.isAnswer = 0L != answer;
-        this.select1 = select1;
-        this.select2 = select2;
-        this.select3 = select3;
-        this.select4 = select4;
-        this.openAt = openAt;
-        this.openTime = openTime;
-        this.endTime = endTime;
+    public static Quiz create(final IQuizBody body) {
+        return builder()
+                .title(body.getTitle())
+                .desc(body.getDesc())
+                .timer(body.getTimer())
+                .answer(body.getAnswer())
+                .isAnswer(0L != body.getAnswer())
+                .select1(body.getSelect1())
+                .select2(body.getSelect2())
+                .select3(body.getSelect3())
+                .select4(body.getSelect4())
+                .openAt(body.getOpenAt())
+                .openTime(body.getOpenTime())
+                .endTime(body.getEndTime())
+                .build();
+    }
+
+    public void update(final IQuizBody body) {
+        this.title = body.getTitle();
+        this.desc = body.getDesc();
+        this.answer = body.getAnswer();
+        this.timer = body.getTimer();
+        this.isAnswer = 0L != body.getAnswer();
+        this.select1 = body.getSelect1();
+        this.select2 = body.getSelect2();
+        this.select3 = body.getSelect3();
+        this.select4 = body.getSelect4();
+        this.openAt = body.getOpenAt();
+        this.openTime = body.getOpenTime();
+        this.endTime = body.getEndTime();
     }
 }

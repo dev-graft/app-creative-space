@@ -1,5 +1,7 @@
 package devgraft.quiz.app;
 
+import devgraft.quiz.domain.IQuizBody;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,10 +11,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class AddQuizRequest {
+public class AddQuizRequest implements IQuizBody {
     private String title;
     private String desc;
     private long timer;

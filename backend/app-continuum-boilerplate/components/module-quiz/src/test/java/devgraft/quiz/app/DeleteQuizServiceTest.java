@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
+@DisplayName("퀴즈 삭제 서비스")
 class DeleteQuizServiceTest {
     private DeleteQuizService deleteQuizService;
     private QuizRepository quizRepository;
@@ -17,7 +18,7 @@ class DeleteQuizServiceTest {
         deleteQuizService = new DeleteQuizService(quizRepository);
     }
 
-    @DisplayName("퀴즈 삭제 대상 아이디 DeleteRepository 전달")
+    @DisplayName("전달받은 아이디를 기준으로 QuizRepo에 삭제를 요청한다.")
     @Test
     void delete_passes_quizId_delete() {
         final Long givenQuizId = 10L;
