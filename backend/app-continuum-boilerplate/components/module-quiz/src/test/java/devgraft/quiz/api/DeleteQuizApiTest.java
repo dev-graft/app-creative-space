@@ -1,7 +1,6 @@
 package devgraft.quiz.api;
 
 import devgraft.quiz.app.DeleteQuizService;
-import devgraft.quiz.config.QuizConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

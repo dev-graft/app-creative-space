@@ -20,9 +20,11 @@ public class UpdateQuizService {
 
     public void updateQuiz(UpdateQuizRequest request) {
         requestValidation(request);
-        final Quiz quiz = quizRepository.findById(request.getQuizId()).orElseThrow(() -> RequestException.of(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다."));
+        final Quiz quiz = quizRepository.findById(request.getQuizId())
+                .orElseThrow(() -> RequestException.of(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다."));
         if (!quiz.getOpenAt().isEqual(request.getOpenAt()))
             QuizHelper.existThrowQuizByOpenAt(quizRepository, request.getOpenAt());
+
         quiz.update(request);
 
         quizRepository.save(quiz);

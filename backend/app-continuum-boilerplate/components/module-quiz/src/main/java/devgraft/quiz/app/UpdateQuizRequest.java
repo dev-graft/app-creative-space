@@ -1,6 +1,6 @@
 package devgraft.quiz.app;
 
-import devgraft.quiz.domain.IQuizBody;
+import devgraft.quiz.domain.QuizBody;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class UpdateQuizRequest implements IQuizBody {
+public class UpdateQuizRequest implements QuizBody {
     private Long quizId;
     private String title;
     private String desc;

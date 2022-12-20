@@ -1,7 +1,6 @@
 dependencies {
     implementation(project(':features:support-advice'))
     implementation(project(':features:support-event'))
-    implementation(project(':features:support-exception'))
-    implementation(project(':features:support-jpa'))
-    testFixturesApi(project(':features:support-jpa'))
+    implementation(project(':components:quiz'))
+    testImplementation(project(':components:quiz'))
 }

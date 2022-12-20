@@ -1,6 +1,6 @@
 package devgraft.quiz.app;
 
-import devgraft.quiz.domain.IQuizBody;
+import devgraft.quiz.domain.QuizCreatedEvent;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class AddQuizRequest implements IQuizBody {
+public class AddQuizRequest {
     private String title;
     private String desc;
     private long timer;
@@ -26,4 +26,20 @@ public class AddQuizRequest implements IQuizBody {
     private LocalDate openAt;
     private LocalTime openTime;
     private LocalTime endTime;
+
+    public QuizCreatedEvent toDomain() {
+        return new QuizCreatedEvent(
+                title,
+                desc,
+                timer,
+                answer,
+                select1,
+                select2,
+                select3,
+                select4,
+                openAt,
+                openTime,
+                endTime
+        );
+    }
 }

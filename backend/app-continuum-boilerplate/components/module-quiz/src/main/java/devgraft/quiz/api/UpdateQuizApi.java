@@ -2,7 +2,6 @@ package devgraft.quiz.api;
 
 import devgraft.quiz.app.UpdateQuizRequest;
 import devgraft.quiz.app.UpdateQuizService;
-import devgraft.quiz.config.QuizConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PutMapping;

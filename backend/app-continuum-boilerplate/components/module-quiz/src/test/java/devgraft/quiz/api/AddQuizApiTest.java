@@ -2,8 +2,6 @@ package devgraft.quiz.api;
 
 import devgraft.quiz.app.AddQuizRequest;
 import devgraft.quiz.app.AddQuizService;
-import devgraft.quiz.config.QuizConstants;
-import devgraft.quiz.service.AddQuizRequestFixture;
 import devgraft.support.mapper.ObjectMapperTestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +14,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.refEq;
@@ -35,16 +36,16 @@ class AddQuizApiTest extends ObjectMapperTestSupport {
     @DisplayName("요청이 성공했을 경우 HttpStatus.CREATED를 반환한다.")
     @Test
     void addQuiz_returnCreateStatus() throws Exception {
-        request(AddQuizRequestFixture.anRequest().build())
+        apiRequest(getRequestBody().build())
                 .andExpect(status().isCreated());
     }
 
     @DisplayName("요청문은 Service에 전달되어야한다.")
     @Test
     void addQuiz_passes_request_AddQuizService() throws Exception {
-        final AddQuizRequest request = AddQuizRequestFixture.anRequest().build();
+        final AddQuizRequest request = getRequestBody().build();
 
-        request(request);
+        apiRequest(request);
 
         Mockito.verify(addQuizService).addQuiz(refEq(request));
     }
@@ -52,17 +53,29 @@ class AddQuizApiTest extends ObjectMapperTestSupport {
     @DisplayName("서비스의 결과와 Api요청 결과는 동일하다.")
     @Test
     void addQuiz_returnValue() throws Exception {
-        final AddQuizRequest request = AddQuizRequestFixture.anRequest().build();
+        final AddQuizRequest request = getRequestBody().build();
         final Long givenReturn = 100L;
         BDDMockito.given(addQuizService.addQuiz(refEq(request))).willReturn(givenReturn);
 
-        request(request)
+        apiRequest(request)
                 .andExpect(MockMvcResultMatchers.jsonPath("$", equalTo(givenReturn.intValue())));
     }
 
-    private ResultActions request(final AddQuizRequest request) throws Exception {
+    private ResultActions apiRequest(final AddQuizRequest request) throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.post(QuizConstants.DOMAIN_NAME)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(request)));
+    }
+
+    private AddQuizRequest.AddQuizRequestBuilder getRequestBody() {
+        return AddQuizRequest.builder()
+                .title("title")
+                .desc("desc")
+                .select1("select1")
+                .select2("select2")
+                .openAt(LocalDate.of(2022, 12, 25))
+                .openTime(LocalTime.of(3, 45))
+                .endTime(LocalTime.of(5, 0))
+                ;
     }
 }

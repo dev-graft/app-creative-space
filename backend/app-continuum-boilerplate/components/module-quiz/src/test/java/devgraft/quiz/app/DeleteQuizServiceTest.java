@@ -25,6 +25,6 @@ class DeleteQuizServiceTest {
 
         deleteQuizService.delete(givenQuizId);
 
-        Mockito.verify(quizRepository).deleteQuizById(ArgumentMatchers.eq(givenQuizId));
+        Mockito.verify(quizRepository).deleteById(ArgumentMatchers.eq(givenQuizId));
     }
 }

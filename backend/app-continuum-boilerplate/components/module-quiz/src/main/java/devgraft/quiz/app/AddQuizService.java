@@ -21,7 +21,8 @@ public class AddQuizService {
     public Long addQuiz(final AddQuizRequest request) {
         requestValidation(request);
         QuizHelper.existThrowQuizByOpenAt(quizRepository, request.getOpenAt());
-        final Quiz quiz = Quiz.create(request);
+        final Quiz quiz = Quiz.create(request.toDomain());
+
         quizRepository.save(quiz);
         return quiz.getId();
     }

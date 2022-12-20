@@ -2,7 +2,6 @@ package devgraft.quiz.app;
 
 import devgraft.quiz.domain.Quiz;
 import devgraft.quiz.domain.QuizRepository;
-import devgraft.quiz.service.AddQuizRequestFixture;
 import devgraft.support.exception.RequestException;
 import devgraft.support.exception.ValidationAsserts;
 import devgraft.support.exception.ValidationError;
@@ -38,7 +37,7 @@ class AddQuizServiceTest {
     @DisplayName("요청문이 요구사항에 맞지않으면 에러를 반환한다.")
     @Test
     void addQuiz_throw_ValidationException() {
-        final AddQuizRequest givenRequest = AddQuizRequestFixture.anEmptyRequest().build();
+        final AddQuizRequest givenRequest = AddQuizRequest.builder().build();
 
         final ValidationException validationException = assertThrows(ValidationException.class, () -> addQuizService.addQuiz(givenRequest));
 
@@ -115,6 +114,7 @@ class AddQuizServiceTest {
                 .endTime(LocalTime.of(5, 0))
                 .build();
         BDDMockito.given(quizRepository.findTopByOpenAt(any())).willReturn(Optional.empty());
+
         addQuizService.addQuiz(givenRequest);
 
         final Quiz saveQuiz = Quiz.builder()

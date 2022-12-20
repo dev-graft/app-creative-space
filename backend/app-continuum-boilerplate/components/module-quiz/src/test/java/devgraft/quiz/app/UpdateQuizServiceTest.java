@@ -2,7 +2,6 @@ package devgraft.quiz.app;
 
 import devgraft.quiz.domain.Quiz;
 import devgraft.quiz.domain.QuizRepository;
-import devgraft.quiz.service.QuizFixture;
 import devgraft.quiz.service.UpdateQuizRequestFixture;
 import devgraft.support.exception.RequestException;
 import devgraft.support.exception.ValidationAsserts;

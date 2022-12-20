@@ -2,7 +2,6 @@ package devgraft.quiz.api;
 
 import devgraft.quiz.app.UpdateQuizRequest;
 import devgraft.quiz.app.UpdateQuizService;
-import devgraft.quiz.config.QuizConstants;
 import devgraft.quiz.service.UpdateQuizRequestFixture;
 import devgraft.support.mapper.ObjectMapperTestSupport;
 import org.junit.jupiter.api.BeforeEach;
