@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     void deleteQuizById(@Param("id") final Long quizId);
-    Optional<Quiz> findQuizByOpenAt(@Param("openAt") final LocalDate openAt);
+    Optional<Quiz> findTopByOpenAt(@Param("openAt") final LocalDate openAt);
 }

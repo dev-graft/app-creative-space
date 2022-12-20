@@ -2,6 +2,8 @@ package devgraft.quiz.api;
 
 import devgraft.quiz.app.UpdateQuizRequest;
 import devgraft.quiz.app.UpdateQuizService;
+import devgraft.quiz.config.QuizConstants;
+import devgraft.quiz.service.UpdateQuizRequestFixture;
 import devgraft.support.mapper.ObjectMapperTestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+@DisplayName("퀴즈 업데이트 Api")
 class UpdateQuizApiTest extends ObjectMapperTestSupport {
     private MockMvc mockMvc;
     private UpdateQuizService updateQuizService;
@@ -24,18 +27,17 @@ class UpdateQuizApiTest extends ObjectMapperTestSupport {
         mockMvc = MockMvcBuilders.standaloneSetup(new UpdateQuizApi(updateQuizService)).build();
     }
 
-    @DisplayName("퀴즈 수정 요청 OK Status 반환")
+    @DisplayName("요청이 성공했을 경우 HttpStatus.OK를 반환한다.")
     @Test
     void updateQuiz_returnOkStatus() throws Exception {
-        request(new UpdateQuizRequest())
+        request(UpdateQuizRequestFixture.anRequest().build())
                 .andExpect(MockMvcResultMatchers.status().isOk())
         ;
     }
-
-    @DisplayName("updateQuiz 서비스 요청문 전달")
+    @DisplayName("요청문은 Service에 전달되어야한다.")
     @Test
     void updateQuiz_passes_request_UpdateQuizService() throws Exception {
-        final UpdateQuizRequest request = new UpdateQuizRequest();
+        final UpdateQuizRequest request = UpdateQuizRequestFixture.anRequest().build();
 
         request(request);
 
@@ -43,7 +45,7 @@ class UpdateQuizApiTest extends ObjectMapperTestSupport {
     }
 
     private ResultActions request(UpdateQuizRequest updateQuizRequest) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.put("/quiz")
+        return mockMvc.perform(MockMvcRequestBuilders.put(QuizConstants.DOMAIN_NAME)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getObjectMapper().writeValueAsString(updateQuizRequest)));
     }

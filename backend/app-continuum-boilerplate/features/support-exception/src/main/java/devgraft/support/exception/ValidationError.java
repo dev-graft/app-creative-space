@@ -21,6 +21,6 @@ public class ValidationError {
     }
 
     public boolean equals(final ValidationError cError) {
-        return Objects.equals(field, cError.getField()) && Objects.equals(message, cError.getMessage());
+        return equals(cError.getField(), cError.getMessage());
     }
 }
