@@ -7,12 +7,10 @@ import devgraft.support.exception.RequestException;
 import devgraft.support.exception.Validation;
 import devgraft.support.exception.ValidationError;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-@ConditionalOnClass(name = "devgraft.quiz.api.UpdateQuizApi")
 @RequiredArgsConstructor
 @Service
 public class UpdateQuizService {
@@ -20,10 +18,12 @@ public class UpdateQuizService {
 
     public void updateQuiz(UpdateQuizRequest request) {
         requestValidation(request);
-        final Quiz quiz = quizRepository.findById(request.getQuizId()).orElseThrow(() -> RequestException.of(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다."));
+        final Quiz quiz = quizRepository.findById(request.getQuizId())
+                .orElseThrow(() -> RequestException.of(HttpStatus.NOT_FOUND, "해당 퀴즈가 존재하지 않습니다."));
         if (!quiz.getOpenAt().isEqual(request.getOpenAt()))
             QuizHelper.existThrowQuizByOpenAt(quizRepository, request.getOpenAt());
-        quiz.update(request);
+
+        quiz.update(request.toDomain());
 
         quizRepository.save(quiz);
     }

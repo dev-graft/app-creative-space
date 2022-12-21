@@ -1,8 +1,8 @@
-package devgraft.quiz.config;
+package devgraft.quiz.api;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class QuizConstants {
+class QuizConstants {
     public static final String DOMAIN_NAME = "/quiz";
 }

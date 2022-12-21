@@ -1,8 +1,8 @@
 package devgraft.quiz.app;
 
 import devgraft.quiz.domain.Quiz;
+import devgraft.quiz.domain.QuizFixture;
 import devgraft.quiz.domain.QuizRepository;
-import devgraft.quiz.service.AddQuizRequestFixture;
 import devgraft.support.exception.RequestException;
 import devgraft.support.exception.ValidationAsserts;
 import devgraft.support.exception.ValidationError;
@@ -11,7 +11,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,9 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("퀴즈 추가 서비스")
 class AddQuizServiceTest {
@@ -38,7 +38,7 @@ class AddQuizServiceTest {
     @DisplayName("요청문이 요구사항에 맞지않으면 에러를 반환한다.")
     @Test
     void addQuiz_throw_ValidationException() {
-        final AddQuizRequest givenRequest = AddQuizRequestFixture.anEmptyRequest().build();
+        final AddQuizRequest givenRequest = AddQuizRequest.builder().build();
 
         final ValidationException validationException = assertThrows(ValidationException.class, () -> addQuizService.addQuiz(givenRequest));
 
@@ -92,7 +92,7 @@ class AddQuizServiceTest {
                 .endTime(LocalTime.of(5, 0))
                 .build();
 
-        BDDMockito.given(quizRepository.findTopByOpenAt(refEq(givenOpenAt))).willReturn(Optional.of(Quiz.builder().build()));
+        BDDMockito.given(quizRepository.findTopByOpenAt(refEq(givenOpenAt))).willReturn(Optional.of(QuizFixture.anQuiz().build()));
 
         final RequestException requestException = assertThrows(RequestException.class,
                 () -> addQuizService.addQuiz(givenRequest));
@@ -114,24 +114,10 @@ class AddQuizServiceTest {
                 .openTime(LocalTime.of(3, 45))
                 .endTime(LocalTime.of(5, 0))
                 .build();
-        BDDMockito.given(quizRepository.findTopByOpenAt(any())).willReturn(Optional.empty());
+
         addQuizService.addQuiz(givenRequest);
 
-        final Quiz saveQuiz = Quiz.builder()
-                .title(givenRequest.getTitle())
-                .desc(givenRequest.getDesc())
-                .timer(givenRequest.getTimer())
-                .answer(givenRequest.getAnswer())
-                .isAnswer(0L != givenRequest.getAnswer())
-                .select1(givenRequest.getSelect1())
-                .select2(givenRequest.getSelect2())
-                .select3(givenRequest.getSelect3())
-                .select4(givenRequest.getSelect4())
-                .openAt(givenRequest.getOpenAt())
-                .openTime(givenRequest.getOpenTime())
-                .endTime(givenRequest.getEndTime())
-                .build();
-
-        Mockito.verify(quizRepository).save(ArgumentMatchers.refEq(saveQuiz));
+        final Quiz saveQuiz = Quiz.create(givenRequest.toDomain());
+        verify(quizRepository, times(1)).save(refEq(saveQuiz));
     }
 }

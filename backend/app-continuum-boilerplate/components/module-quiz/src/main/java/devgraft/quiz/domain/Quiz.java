@@ -27,7 +27,6 @@ public class Quiz extends BaseEntity {
     private Long id;
     private String title;
     private String desc;
-    private boolean isAnswer;
     private Long timer;
     private Long answer;
     private String select1;
@@ -38,29 +37,27 @@ public class Quiz extends BaseEntity {
     private LocalTime openTime;
     private LocalTime endTime;
 
-    public static Quiz create(final IQuizBody body) {
-        return builder()
-                .title(body.getTitle())
-                .desc(body.getDesc())
-                .timer(body.getTimer())
-                .answer(body.getAnswer())
-                .isAnswer(0L != body.getAnswer())
-                .select1(body.getSelect1())
-                .select2(body.getSelect2())
-                .select3(body.getSelect3())
-                .select4(body.getSelect4())
-                .openAt(body.getOpenAt())
-                .openTime(body.getOpenTime())
-                .endTime(body.getEndTime())
-                .build();
+    public static Quiz create(final QuizCreatedData body) {
+        return new Quiz(
+                null,
+                body.getTitle(),
+                body.getDesc(),
+                body.getTimer(),
+                body.getAnswer(),
+                body.getSelect1(),
+                body.getSelect2(),
+                body.getSelect3(),
+                body.getSelect4(),
+                body.getOpenAt(),
+                body.getOpenTime(),
+                body.getEndTime());
     }
 
-    public void update(final IQuizBody body) {
+    public void update(final QuizUpdatedData body) {
         this.title = body.getTitle();
         this.desc = body.getDesc();
         this.answer = body.getAnswer();
         this.timer = body.getTimer();
-        this.isAnswer = 0L != body.getAnswer();
         this.select1 = body.getSelect1();
         this.select2 = body.getSelect2();
         this.select3 = body.getSelect3();
