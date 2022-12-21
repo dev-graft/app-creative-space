@@ -1,5 +1,4 @@
 plugins {
-//    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" apply false
     id 'org.springframework.boot' version '2.7.3' apply false
     id 'io.spring.dependency-management' version '1.0.15.RELEASE' apply false
     id 'java-library'
