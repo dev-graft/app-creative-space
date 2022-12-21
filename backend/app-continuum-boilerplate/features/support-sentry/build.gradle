@@ -1,4 +1,0 @@
-dependencies {
-    api 'io.sentry:sentry-spring-boot-starter:6.8.0'
-    api 'io.sentry:sentry-logback:6.8.0'
-}

@@ -1,3 +1,0 @@
-sentry:
-  dsn: ${sentry-dsn}
-  traces-sample-rate: 1.0
