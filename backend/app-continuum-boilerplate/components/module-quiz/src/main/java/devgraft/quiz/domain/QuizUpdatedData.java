@@ -6,10 +6,9 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
 @AllArgsConstructor
 @Getter
-public class QuizCreatedEvent {
+public class QuizUpdatedData {
     private String title;
     private String desc;
     private long timer;

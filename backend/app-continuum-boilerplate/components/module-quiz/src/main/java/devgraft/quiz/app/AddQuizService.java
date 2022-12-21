@@ -6,12 +6,10 @@ import devgraft.quiz.domain.QuizRepository;
 import devgraft.support.exception.Validation;
 import devgraft.support.exception.ValidationError;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-@ConditionalOnClass(name = "devgraft.quiz.api.AddQuizApi")
 @RequiredArgsConstructor
 @Service
 public class AddQuizService {

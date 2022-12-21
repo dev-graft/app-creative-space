@@ -1,6 +1,7 @@
 package devgraft.quiz.app;
 
 import devgraft.quiz.domain.Quiz;
+import devgraft.quiz.domain.QuizFixture;
 import devgraft.quiz.domain.QuizRepository;
 import devgraft.quiz.service.UpdateQuizRequestFixture;
 import devgraft.support.exception.RequestException;
@@ -70,11 +71,19 @@ class UpdateQuizServiceTest {
     @Test
     void updateQuiz_throw_DuplicatedOpenAtException() {
         final LocalDate givenOpenAt = LocalDate.of(2022, 12, 18);
-        final UpdateQuizRequest givenRequest = UpdateQuizRequestFixture.anRequest()
+        final UpdateQuizRequest givenRequest =  UpdateQuizRequest.builder()
+                .quizId(1L)
+                .title("title")
+                .desc("desc")
+                .select1("select1")
+                .select2("select2")
+                .answer(2L)
                 .openAt(givenOpenAt)
+                .openTime(LocalTime.of(3, 45))
+                .endTime(LocalTime.of(5, 0))
                 .build();
 
-        BDDMockito.given(quizRepository.findById(any())).willReturn(Optional.of(QuizFixture.anQuiz().build()));
+        BDDMockito.given(quizRepository.findById(any())).willReturn(Optional.of(QuizFixture.anQuiz().openAt(LocalDate.of(2022,11,11)).build()));
         BDDMockito.given(quizRepository.findTopByOpenAt(givenOpenAt)).willReturn(Optional.of(Quiz.builder().build()));
 
         final RequestException requestException = assertThrows(RequestException.class,
@@ -102,32 +111,24 @@ class UpdateQuizServiceTest {
     @Test
     void editQuiz_equalsTrue() {
         final Long givenQUizId = 2L;
-        final UpdateQuizRequest givenRequest = UpdateQuizRequestFixture.anRequest()
-                .quizId(givenQUizId)
+        final UpdateQuizRequest givenRequest =  UpdateQuizRequest.builder()
+                .quizId(1L)
+                .title("title")
+                .desc("desc")
+                .select1("select1")
+                .select2("select2")
+                .answer(2L)
+                .openAt(LocalDate.of(2022,12,25))
+                .openTime(LocalTime.of(3, 45))
+                .endTime(LocalTime.of(5, 0))
                 .build();
-        final Quiz updateTargetQuiz = QuizFixture.anQuiz()
-                .id(givenQUizId)
-                .build();
-
+        final Quiz updateTargetQuiz = QuizFixture.anQuiz().build();
         BDDMockito.given(quizRepository.findById(givenRequest.getQuizId())).willReturn(Optional.of(updateTargetQuiz));
 
         updateQuizService.updateQuiz(givenRequest);
 
-        final Quiz saveQuiz = QuizFixture.anQuiz()
-                .id(givenQUizId)
-                .title(givenRequest.getTitle())
-                .desc(givenRequest.getDesc())
-                .timer(givenRequest.getTimer())
-                .answer(givenRequest.getAnswer())
-                .isAnswer(0L != givenRequest.getAnswer())
-                .select1(givenRequest.getSelect1())
-                .select2(givenRequest.getSelect2())
-                .select3(givenRequest.getSelect3())
-                .select4(givenRequest.getSelect4())
-                .openAt(givenRequest.getOpenAt())
-                .openTime(givenRequest.getOpenTime())
-                .endTime(givenRequest.getEndTime())
-                .build();
+        final Quiz saveQuiz = QuizFixture.anQuiz().build();
+        saveQuiz.update(givenRequest.toDomain());
 
         Mockito.verify(quizRepository).save(ArgumentMatchers.refEq(saveQuiz));
     }
