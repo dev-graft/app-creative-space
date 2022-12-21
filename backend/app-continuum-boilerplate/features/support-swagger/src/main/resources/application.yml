@@ -1,0 +1,5 @@
+servers:
+  - url: http://localhost:8080/v1
+  - description: V1 Server
+  - url: http://localhost:8080/v2
+    description: V2 Server
