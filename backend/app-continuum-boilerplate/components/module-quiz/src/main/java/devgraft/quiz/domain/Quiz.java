@@ -27,7 +27,6 @@ public class Quiz extends BaseEntity {
     private Long id;
     private String title;
     private String desc;
-    private boolean isAnswer;
     private Long timer;
     private Long answer;
     private String select1;
@@ -38,11 +37,11 @@ public class Quiz extends BaseEntity {
     private LocalTime openTime;
     private LocalTime endTime;
 
-    public static Quiz create(final QuizCreatedEvent body) {
-        return new Quiz(null,
+    public static Quiz create(final QuizCreatedData body) {
+        return new Quiz(
+                null,
                 body.getTitle(),
                 body.getDesc(),
-                0L != body.getAnswer(),
                 body.getTimer(),
                 body.getAnswer(),
                 body.getSelect1(),
@@ -54,12 +53,11 @@ public class Quiz extends BaseEntity {
                 body.getEndTime());
     }
 
-    public void update(final QuizBody body) {
+    public void update(final QuizUpdatedData body) {
         this.title = body.getTitle();
         this.desc = body.getDesc();
         this.answer = body.getAnswer();
         this.timer = body.getTimer();
-        this.isAnswer = 0L != body.getAnswer();
         this.select1 = body.getSelect1();
         this.select2 = body.getSelect2();
         this.select3 = body.getSelect3();
