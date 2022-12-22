@@ -1,4 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export function Navigation():void {
-
+export default function Header() {
+    return (
+        <>Header</>
+    )
 }
