@@ -6,6 +6,6 @@ export default {
     component: Header
 } as ComponentMeta<typeof Header>
 
-const Template: ComponentStory<typeof Header> = (args) => <Header/>;
+const Template: ComponentStory<typeof Header> = () => <Header onDrawerToggle={()=>{console.log("hello")}}/>;
 
 export const HeaderTemplate = Template.bind({});
