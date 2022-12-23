@@ -3,6 +3,7 @@ package devgraft.support.advice;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.PathContainer;
@@ -43,7 +44,11 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
                 response.setStatusCode(commonResult.getStatus());
             }
             return body;
+        } else if (PageImpl.class.isInstance(body)) {
+            final PageImpl<Object> pageObject = (PageImpl<Object>) body;
+            return SingleResult.success(SearchResult.from(pageObject));
         }
+
         return null != body ? SingleResult.success(body) : CommonResult.success();
     }
 }

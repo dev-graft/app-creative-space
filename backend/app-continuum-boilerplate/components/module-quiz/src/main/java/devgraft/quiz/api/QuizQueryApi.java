@@ -6,12 +6,12 @@ import devgraft.quiz.query.QuizQueryDslRepository;
 import devgraft.support.exception.RequestException;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,7 +41,9 @@ public class QuizQueryApi {
 
     @ApiOperation("퀴즈 목록 조회")
     @GetMapping(QuizConstants.DOMAIN_NAME)
-    public List<QuizDto> getQuizList() {
-        return repository.find();
+    public Page<QuizDto> getQuizList(@RequestParam(value = "keyword", defaultValue = "%") final String keyword,
+                                     @RequestParam(value = "page", defaultValue = "0") final int page,
+                                     @RequestParam(value = "offset", defaultValue = "20") final int offset) {
+        return repository.find(keyword, PageRequest.of(page, offset));
     }
 }
