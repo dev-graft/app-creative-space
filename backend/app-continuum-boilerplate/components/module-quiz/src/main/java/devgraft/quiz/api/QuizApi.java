@@ -1,14 +1,21 @@
 package devgraft.quiz.api;
 
-import devgraft.quiz.app.*;
-import devgraft.quiz.query.QuizData;
-import devgraft.quiz.query.QuizDataDao;
-import devgraft.quiz.query.QuizDataSpec;
+import devgraft.quiz.app.AddQuizRequest;
+import devgraft.quiz.app.AddQuizService;
+import devgraft.quiz.app.DeleteQuizService;
+import devgraft.quiz.app.UpdateQuizRequest;
+import devgraft.quiz.app.UpdateQuizService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags="퀴즈 Api")
 @RequestMapping(QuizConstants.DOMAIN_NAME)
@@ -18,7 +25,6 @@ public class QuizApi {
     private final AddQuizService addQuizService;
     private final UpdateQuizService updateQuizService;
     private final DeleteQuizService deleteQuizService;
-    private final QuizDataDao quizDataDao;
 
     @ApiOperation("퀴즈 추가")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -39,24 +45,5 @@ public class QuizApi {
         deleteQuizService.delete(quizId);
     }
 
-    @ApiOperation("퀴즈 조회")
-    @GetMapping
-    public QuizResponse getQuiz(@RequestParam(name = "id") final Long id) {
-        final QuizData quizData = quizDataDao.findOne(QuizDataSpec.idEquals(id))
-                .orElse(null);
-        return QuizResponse.builder()
-                .id(quizData.getId())
-                .title(quizData.getTitle())
-                .desc(quizData.getDesc())
-                .timer(quizData.getTimer())
-                .answer(quizData.getAnswer())
-                .select1(quizData.getSelect1())
-                .select2(quizData.getSelect2())
-                .select3(quizData.getSelect3())
-                .select4(quizData.getSelect4())
-                .openAt(quizData.getOpenAt())
-                .openTime(quizData.getOpenTime())
-                .endTime(quizData.getEndTime())
-                .build();
-    }
+
 }

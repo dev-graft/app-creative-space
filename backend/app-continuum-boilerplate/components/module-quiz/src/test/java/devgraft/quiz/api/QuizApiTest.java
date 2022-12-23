@@ -5,7 +5,6 @@ import devgraft.quiz.app.AddQuizService;
 import devgraft.quiz.app.DeleteQuizService;
 import devgraft.quiz.app.UpdateQuizRequest;
 import devgraft.quiz.app.UpdateQuizService;
-import devgraft.quiz.query.QuizDataDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -35,15 +34,13 @@ class QuizApiTest {
     private AddQuizService addQuizService;
     private UpdateQuizService updateQuizService;
     private DeleteQuizService deleteQuizService;
-    private QuizDataDao quizDataDao;
 
     @BeforeEach
     void setUp() {
         addQuizService = Mockito.mock(AddQuizService.class);
         updateQuizService = Mockito.mock(UpdateQuizService.class);
         deleteQuizService = Mockito.mock(DeleteQuizService.class);
-        quizDataDao = Mockito.mock(QuizDataDao.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(new QuizApi(addQuizService, updateQuizService, deleteQuizService, quizDataDao)).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(new QuizApi(addQuizService, updateQuizService, deleteQuizService)).build();
     }
 
     @DisplayName("[퀴즈 추가]요청이 성공했을 경우 HttpStatus.CREATED를 반환한다.")
