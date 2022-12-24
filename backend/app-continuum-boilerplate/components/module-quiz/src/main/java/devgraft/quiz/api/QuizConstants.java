@@ -4,5 +4,5 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 class QuizConstants {
-    public static final String DOMAIN_NAME = "/quiz";
+    public static final String DOMAIN_NAME = "/quizzes";
 }

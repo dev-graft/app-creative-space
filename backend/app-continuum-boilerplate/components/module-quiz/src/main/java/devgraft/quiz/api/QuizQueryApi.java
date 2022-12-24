@@ -20,8 +20,8 @@ public class QuizQueryApi {
     private final QuizQueryDslRepository repository;
 
     @ApiOperation("퀴즈 조회")
-    @GetMapping(QuizConstants.DOMAIN_NAME + "/one")
-    public QuizResponse getQuiz(@RequestParam(name = "target") final Long id) {
+    @GetMapping(QuizConstants.DOMAIN_NAME + "/detail")
+    public QuizResponse getQuizDetail(@RequestParam(name = "quizId") final Long id) {
         final QuizDetailDto quizData = repository.findOne(id).orElseThrow(() -> RequestException.of(HttpStatus.NOT_FOUND, "뭘끼"));
 
         return QuizResponse.builder()
