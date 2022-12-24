@@ -1,7 +1,8 @@
 package devgraft.quiz.api;
 
 import devgraft.quiz.app.QuizResponse;
-import devgraft.quiz.query.QuizDto;
+import devgraft.quiz.query.QuizDetailDto;
+import devgraft.quiz.query.QuizItemDto;
 import devgraft.quiz.query.QuizQueryDslRepository;
 import devgraft.support.exception.RequestException;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +22,7 @@ public class QuizQueryApi {
     @ApiOperation("퀴즈 조회")
     @GetMapping(QuizConstants.DOMAIN_NAME + "/one")
     public QuizResponse getQuiz(@RequestParam(name = "target") final Long id) {
-        final QuizDto quizData = repository.findOne(id).orElseThrow(() -> RequestException.of(HttpStatus.NOT_FOUND, "뭘끼"));
+        final QuizDetailDto quizData = repository.findOne(id).orElseThrow(() -> RequestException.of(HttpStatus.NOT_FOUND, "뭘끼"));
 
         return QuizResponse.builder()
                 .id(quizData.getId())
@@ -41,9 +42,9 @@ public class QuizQueryApi {
 
     @ApiOperation("퀴즈 목록 조회")
     @GetMapping(QuizConstants.DOMAIN_NAME)
-    public Page<QuizDto> getQuizList(@RequestParam(value = "keyword", defaultValue = "%") final String keyword,
-                                     @RequestParam(value = "page", defaultValue = "0") final int page,
-                                     @RequestParam(value = "offset", defaultValue = "20") final int offset) {
+    public Page<QuizItemDto> getQuizList(@RequestParam(value = "keyword", defaultValue = "%") final String keyword,
+                                         @RequestParam(value = "page", defaultValue = "0") final int page,
+                                         @RequestParam(value = "offset", defaultValue = "20") final int offset) {
         return repository.findAll(keyword, PageRequest.of(page, offset));
     }
 }

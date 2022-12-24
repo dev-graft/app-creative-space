@@ -19,9 +19,9 @@ import static devgraft.quiz.domain.QQuiz.quiz;
 public class QuizQueryDslRepository {
     private final JPAQueryFactory queryFactory;
 
-    public Optional<QuizDto> findOne(final Long quizId) {
+    public Optional<QuizDetailDto> findOne(final Long quizId) {
         return Optional.ofNullable(queryFactory.select(
-                        Projections.fields(QuizDto.class,
+                        Projections.fields(QuizDetailDto.class,
                                 Expressions.asNumber(quizId).as("id"),
                                 quiz.title,
                                 quiz.desc,
@@ -40,23 +40,14 @@ public class QuizQueryDslRepository {
                 .fetchOne());
     }
 
-    public Page<QuizDto> findAll(final String keyword, final Pageable pageable) {
+    public Page<QuizItemDto> findAll(final String keyword, final Pageable pageable) {
         final Long count = queryFactory.select(quiz.count()).from(quiz).where(quiz.title.like(keyword),
                 quiz.desc.like(keyword)).fetchOne();
 
-        final List<QuizDto> fetch = queryFactory.select(Projections.fields(QuizDto.class,
+        final List<QuizItemDto> fetch = queryFactory.select(Projections.fields(QuizItemDto.class,
                         quiz.id,
                         quiz.title,
-                        quiz.desc,
-                        quiz.timer,
-                        quiz.answer,
-                        quiz.select1,
-                        quiz.select2,
-                        quiz.select3,
-                        quiz.select4,
-                        quiz.openAt,
-                        quiz.openTime,
-                        quiz.endTime
+                        quiz.openAt
                 ))
                 .from(quiz)
                 .where(

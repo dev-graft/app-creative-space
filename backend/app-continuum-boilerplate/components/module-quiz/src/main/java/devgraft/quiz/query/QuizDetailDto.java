@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
-public class QuizDto {
+public class QuizDetailDto {
     private Long id;
     private String title;
     private String desc;
