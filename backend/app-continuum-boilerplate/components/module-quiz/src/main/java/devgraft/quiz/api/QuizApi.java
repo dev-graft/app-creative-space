@@ -44,6 +44,4 @@ public class QuizApi {
     public void deleteQuiz(final Long quizId) {
         deleteQuizService.delete(quizId);
     }
-
-
 }

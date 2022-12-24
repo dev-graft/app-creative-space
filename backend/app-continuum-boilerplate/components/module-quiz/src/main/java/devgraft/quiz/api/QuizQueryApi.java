@@ -44,6 +44,6 @@ public class QuizQueryApi {
     public Page<QuizDto> getQuizList(@RequestParam(value = "keyword", defaultValue = "%") final String keyword,
                                      @RequestParam(value = "page", defaultValue = "0") final int page,
                                      @RequestParam(value = "offset", defaultValue = "20") final int offset) {
-        return repository.find(keyword, PageRequest.of(page, offset));
+        return repository.findAll(keyword, PageRequest.of(page, offset));
     }
 }

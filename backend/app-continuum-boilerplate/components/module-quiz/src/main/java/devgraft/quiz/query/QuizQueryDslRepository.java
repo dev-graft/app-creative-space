@@ -40,7 +40,7 @@ public class QuizQueryDslRepository {
                 .fetchOne());
     }
 
-    public Page<QuizDto> find(final String keyword, final Pageable pageable) {
+    public Page<QuizDto> findAll(final String keyword, final Pageable pageable) {
         final Long count = queryFactory.select(quiz.count()).from(quiz).where(quiz.title.like(keyword),
                 quiz.desc.like(keyword)).fetchOne();
 
@@ -68,25 +68,5 @@ public class QuizQueryDslRepository {
                 .fetch();
 
         return new PageImpl<>(fetch, pageable, count);
-    }
-
-    public List<QuizDto> find() {
-        return queryFactory.select(Projections.fields(QuizDto.class,
-                        quiz.id,
-                        quiz.title,
-                        quiz.desc,
-                        quiz.timer,
-                        quiz.answer,
-                        quiz.select1,
-                        quiz.select2,
-                        quiz.select3,
-                        quiz.select4,
-                        quiz.openAt,
-                        quiz.openTime,
-                        quiz.endTime
-                ))
-                .from(quiz)
-                .where(
-                ).fetch();
     }
 }
