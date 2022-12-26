@@ -1,27 +1,29 @@
 package devgraft.quiz.domain;
 
-import devgraft.support.jpa.BaseEntity;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "QUIZ")
 @Entity
 @Getter
-public class Quiz extends BaseEntity {
+public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,6 +38,26 @@ public class Quiz extends BaseEntity {
     private LocalDate openAt;
     private LocalTime openTime;
     private LocalTime endTime;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @Builder
+    private Quiz(final Long id, final String title, final String desc, final Long timer, final Long answer, final String select1, final String select2, final String select3, final String select4, final LocalDate openAt, final LocalTime openTime, final LocalTime endTime) {
+        this.id = id;
+        this.title = title;
+        this.desc = desc;
+        this.timer = timer;
+        this.answer = answer;
+        this.select1 = select1;
+        this.select2 = select2;
+        this.select3 = select3;
+        this.select4 = select4;
+        this.openAt = openAt;
+        this.openTime = openTime;
+        this.endTime = endTime;
+    }
 
     public static Quiz create(final QuizCreatedData body) {
         return new Quiz(
