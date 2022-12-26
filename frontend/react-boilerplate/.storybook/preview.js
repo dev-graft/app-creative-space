@@ -5,7 +5,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import '@fontsource/material-icons';
 import {CssBaseline, ThemeProvider} from "@mui/material";
-import {darkTheme, defaultTheme, lightTheme} from "../src/themes";
+import {darkTheme, defaultTheme, lightTheme} from "@/styles/themes";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

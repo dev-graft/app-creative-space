@@ -1,13 +1,10 @@
-import {useRoutes} from 'react-router-dom'
 import * as React from "react";
+import type {RouteObject} from 'react-router-dom'
 
-
-const TestRoutes = {
+const MainRoutes:RouteObject = {
     path: '/',
     element: <><p>Hello</p></>,
     children: [{path:'/', element:<><p>Hello</p></>}]
 };
 
-export default function Routes() {
-    return useRoutes([TestRoutes])
-}
+export default MainRoutes;
