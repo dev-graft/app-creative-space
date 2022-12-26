@@ -1,18 +1,19 @@
 package devgraft.quiz.query;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import static devgraft.quiz.domain.QQuiz.quiz;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
-
-import static devgraft.quiz.domain.QQuiz.quiz;
 
 @RequiredArgsConstructor
 @Repository
@@ -40,7 +41,7 @@ public class QuizQueryDslRepository {
                 .fetchOne());
     }
 
-    public Page<QuizItemDto> findAll(final String keyword, final Pageable pageable) {
+    public Page<QuizItemDto> findAll(final String keyword, final YearMonth month, final Pageable pageable) {
         final Long count = queryFactory.select(quiz.count()).from(quiz).where(quiz.title.like(keyword),
                 quiz.desc.like(keyword)).fetchOne();
 
@@ -52,12 +53,17 @@ public class QuizQueryDslRepository {
                 .from(quiz)
                 .where(
                         quiz.title.like(keyword),
-                        quiz.desc.like(keyword)
+                        quiz.desc.like(keyword),
+                        openAtBetween(month)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         return new PageImpl<>(fetch, pageable, count);
+    }
+
+    private BooleanExpression openAtBetween(final YearMonth month) {
+        return null != month ? quiz.openAt.between(month.atDay(1), month.atEndOfMonth()) : null;
     }
 }
