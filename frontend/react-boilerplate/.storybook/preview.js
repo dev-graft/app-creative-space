@@ -22,14 +22,14 @@ export const globalTypes = {
     name: "Theme",
     title: "Theme",
     description: "Theme for your components",
-    defaultValue: "light",
+    defaultValue: "default",
     toolbar: {
       icon: "paintbrush",
       dynamicTitle: true,
       items: [
         { value: "light", left: "☀️", title: "Light mode" },
         { value: "dark", left: "🌙", title: "Dark mode" },
-        { value: "none", left: "🌙", title: "None mode" },
+        { value: "default", left: "🌙", title: "Default mode" },
       ],
     },
   },
@@ -47,7 +47,7 @@ export const withMuiTheme = (Story, context) => {
   const { theme: themeKey } = context.globals;
 
   // only recompute the theme if the themeKey changes
-  const theme = useMemo(() => THEMES[themeKey] || THEMES["light"], [themeKey]);
+  const theme = useMemo(() => THEMES[themeKey] || THEMES["default"], [themeKey]);
 
   return (
       <ThemeProvider theme={theme}>
