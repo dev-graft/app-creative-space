@@ -11,11 +11,9 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Server;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.util.Collections;
 import java.util.List;
 
 @EnableOpenApi
@@ -33,14 +31,9 @@ public class SwaggerDocumentationConfig {
         );
 
         io.swagger.v3.oas.models.servers.Server local = new io.swagger.v3.oas.models.servers.Server();
-        local.setDescription("local");
-        local.setUrl("http://localhost:8080");
+        local.url("/");
 
-        io.swagger.v3.oas.models.servers.Server prod = new io.swagger.v3.oas.models.servers.Server();
-        prod.setDescription("prod");
-        prod.setUrl("https://devgraft.com");
-
-        openAPI.setServers(List.of(local, prod));
+        openAPI.setServers(List.of(local));
         return openAPI;
     }
 
@@ -57,11 +50,7 @@ public class SwaggerDocumentationConfig {
 
     @Bean
     public Docket customImplementation() {
-        final Server local = new Server("local", "http://localhost:8080", "for local usages", Collections.emptyList(), Collections.emptyList());
-        final Server prod = new Server("prod", "https://devgraft.com", "for prod", Collections.emptyList(), Collections.emptyList());
-
         return new Docket(DocumentationType.OAS_30)
-                .servers(local, prod)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("devgraft"))
                 .paths(PathSelectors.ant("/**"))
