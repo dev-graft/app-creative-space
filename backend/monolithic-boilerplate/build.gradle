@@ -10,6 +10,7 @@ group = 'devgraft'
 version = null
 sourceCompatibility = '17'
 archivesBaseName = 'app'
+
 jar {enabled = false}
 
 configurations {
