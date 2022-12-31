@@ -2,7 +2,6 @@ package devgraft.supports.advice;
 
 import devgraft.supports.exception.RequestException;
 import devgraft.supports.exception.ValidationException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -10,14 +9,13 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
-@Slf4j
-@RestControllerAdvice
+//@Slf4j
+//@RestControllerAdvice
 public class ExceptionAdvice {
 
     @ExceptionHandler(RequestException.class)

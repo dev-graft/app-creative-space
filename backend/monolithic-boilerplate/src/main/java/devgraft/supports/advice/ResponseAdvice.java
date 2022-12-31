@@ -1,7 +1,6 @@
 package devgraft.supports.advice;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
@@ -9,24 +8,22 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.PathContainer;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@RestControllerAdvice
+//@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+//@RestControllerAdvice
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     private final List<PathPattern> ignores;
 
-    public ResponseAdvice(@Value("${spring.advice.ignore-url-pattern-list:/v*/api-docs,/docs/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/swagger/**}")
+    public ResponseAdvice(@Value("${spring.advice.ignore-url-pattern-list:/v*/api-docs,/docs/**,/swagger-ui/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/swagger/**}")
                                   List<String> ignoreUrlPatternList) {
         ignores = ignoreUrlPatternList.stream()
                 .map(pattern -> new PathPatternParser().parse(pattern))
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
     @Override
@@ -44,7 +41,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
                 response.setStatusCode(commonResult.getStatus());
             }
             return body;
-        } else if (PageImpl.class.isInstance(body)) {
+        } else if (body instanceof PageImpl) {
             final PageImpl<Object> pageObject = (PageImpl<Object>) body;
             return SingleResult.success(SearchResult.from(pageObject));
         }

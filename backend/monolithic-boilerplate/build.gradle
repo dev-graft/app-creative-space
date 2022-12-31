@@ -29,7 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     //swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
-
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
     // mapper
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
