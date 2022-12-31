@@ -1,17 +1,19 @@
 plugins {
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'java'
 }
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
 group = 'devgraft'
 version = null
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 archivesBaseName = 'app'
+
 jar {enabled = false}
 
 configurations {
-//    jar.archiveName = "app.jar"
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -19,6 +21,39 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    //swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+    // mapper
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    // jpa
+    implementation 'com.querydsl:querydsl-jpa'
+    implementation 'com.querydsl:querydsl-apt'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    // advice
+    implementation 'org.springframework.data:spring-data-commons:2.7.2'
+//    implementation "com.fasterxml.jackson.core:jackson-databind"
+//    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+//    implementation 'org.springframework:spring-webflux:5.0.1.RELEASE'
+    //h2 - local running
+    runtimeOnly 'com.h2database:h2'
+    testRuntimeOnly 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 clean {
@@ -33,15 +68,30 @@ tasks.build.doLast {
     }
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+def querydslSrcDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', querydslSrcDir]
+        }
+    }
+}
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslSrcDir
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
 }
