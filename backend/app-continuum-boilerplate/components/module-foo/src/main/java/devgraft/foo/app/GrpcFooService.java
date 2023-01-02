@@ -16,7 +16,7 @@ public class GrpcFooService extends SimpleGrpc.SimpleImplBase {
     public void callMethod(final SimpleServiceProto.SimpleRequest request, final StreamObserver<SimpleReply> responseObserver) {
         log.info("request message: {}", request.getMessage());
         SimpleReply reply = SimpleReply.newBuilder()
-                .setMessage("My Name Foo")
+                .setMessage(request.getMessage())
                 .build();
         responseObserver.onNext(reply);
         responseObserver.onCompleted();

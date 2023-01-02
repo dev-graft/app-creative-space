@@ -5,6 +5,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation(project(':features:support-exception'))
     implementation(project(':features:support-advice'))
-    implementation(project(':features:support-event'))
-    api(project(':features:support-jpa'))
+//    implementation(project(':features:support-event'))
+//    api(project(':features:support-jpa'))
 }
