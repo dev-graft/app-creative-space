@@ -1,10 +1,9 @@
 dependencies {
     //grpc
+//    implementation files('client-simple-plain.jar')
     implementation 'net.devh:grpc-server-spring-boot-starter:2.12.0.RELEASE'
-    implementation files('client-simple-plain.jar')
+    implementation(project(':components:client-simple'))
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation(project(':features:support-exception'))
     implementation(project(':features:support-advice'))
-//    implementation(project(':features:support-event'))
-//    api(project(':features:support-jpa'))
 }

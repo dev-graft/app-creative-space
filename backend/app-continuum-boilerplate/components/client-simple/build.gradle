@@ -16,12 +16,6 @@ dependencies {
     //grpc
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
-
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation(project(':features:support-exception'))
-    implementation(project(':features:support-advice'))
-    implementation(project(':features:support-event'))
-    api(project(':features:support-jpa'))
 }
 
 protobuf {
@@ -33,6 +27,13 @@ protobuf {
     generatedFilesBaseDir = "$projectDir/src/generated"
     clean {
         delete generatedFilesBaseDir
+    }
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main', generatedFilesBaseDir]
+            }
+        }
     }
     plugins {
         grpc {
