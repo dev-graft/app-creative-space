@@ -1,0 +1,18 @@
+spring:
+  config:
+    import:
+    - classpath:db.properties
+  profiles:
+    include:
+      - db
+      - sentry
+    group:
+      local: local,h2,admin
+      dev: local,h2
+      prod:
+
+server:
+  port: 8889
+grpc:
+  server:
+    port: 9999

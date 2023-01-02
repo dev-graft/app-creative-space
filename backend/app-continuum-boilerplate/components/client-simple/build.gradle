@@ -1,0 +1,47 @@
+buildscript {
+    ext {
+        protobufVersion = '3.14.0'
+        protobufPluginVersion = '0.8.14'
+        grpcVersion = '1.35.0'
+    }
+}
+
+plugins {
+    id 'com.google.protobuf' version "${protobufPluginVersion}"
+}
+
+apply plugin: "com.google.protobuf"
+
+dependencies {
+    //grpc
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation(project(':features:support-exception'))
+    implementation(project(':features:support-advice'))
+    implementation(project(':features:support-event'))
+    api(project(':features:support-jpa'))
+}
+
+protobuf {
+    protoc {
+        // https://github.com/grpc/grpc-java/issues/7690
+        if (osdetector.os == 'osx') artifact = 'com.google.protobuf:protoc:3.14.0:osx-x86_64'
+        else artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    generatedFilesBaseDir = "$projectDir/src/generated"
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}:osx-x86_64"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc{}
+        }
+    }
+}

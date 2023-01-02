@@ -11,6 +11,11 @@ include ':features:support-event'
 /* events */
 /* modules */
 include ':components:module-quiz'
+include ':components:module-foo'
+include ':components:module-bar'
 /* clients */
+include ':components:client-simple'
 /* apps */
 include ':applications:app-demo' // support-mapper + support-exception
+include ':applications:app-foo' // support-mapper + support-exception
+include ':applications:app-bar' // support-mapper + support-exception

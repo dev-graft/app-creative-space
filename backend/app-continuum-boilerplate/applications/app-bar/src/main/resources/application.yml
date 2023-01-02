@@ -1,0 +1,20 @@
+spring:
+  config:
+    import:
+    - classpath:db.properties
+  profiles:
+    include:
+      - db
+      - sentry
+    group:
+      local: local,h2,admin
+      dev: local,h2
+      prod:
+
+server:
+  port: 8888
+grpc:
+  client:
+    test:
+      address: 'static://127.0.0.1:9999'
+      negotiationtype: plaintext
