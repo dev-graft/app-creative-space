@@ -1,1 +1,4 @@
 rootProject.name = 'backend'
+
+include ':components:module-member'
+include ':components:module-friend'
