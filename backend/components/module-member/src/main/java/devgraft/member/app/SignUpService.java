@@ -1,9 +1,11 @@
 package devgraft.member.app;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,5 +26,9 @@ public class SignUpService {
     public static class SignUpResponse {
         private String accessToken;
         private String refreshToken;
+
+        public void test() {
+        }
     }
+
 }

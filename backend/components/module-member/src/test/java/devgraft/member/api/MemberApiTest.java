@@ -3,6 +3,7 @@ package devgraft.member.api;
 import devgraft.member.app.SignUpService;
 import devgraft.member.app.SignUpService.SignUpRequest;
 import devgraft.member.app.SignUpService.SignUpResponse;
+import org.approvaltests.Approvals;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
