@@ -12,7 +12,7 @@ subprojects {
     apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
     group = 'devgraft'
-    version = '0.0.1'
+    version = null
     sourceCompatibility = '17'
 
     repositories {
@@ -20,6 +20,7 @@ subprojects {
     }
 
     dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
         implementation platform('org.springframework.cloud:spring-cloud-dependencies:2021.0.0')
         implementation 'org.springframework.boot:spring-boot-starter'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'

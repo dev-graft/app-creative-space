@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_multiple_files = false;
+option java_package = "devgraft.simple.lib";
+option java_outer_classname = "SimpleServiceProto";
+
+service Simple {
+  rpc callMethod (SimpleRequest) returns (SimpleReply) {}
+}
+
+message SimpleRequest {
+  string message = 1;
+}
+
+message SimpleReply {
+  string message = 1;
+}
